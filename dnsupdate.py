@@ -53,7 +53,8 @@ class NameDnsUpdater:
         # 'https://api.name.com/v4/domains/onecore.life/records'
         # 从上面的返回结果中解析出对应host的ID
         try:
-            response = requests.get('https://api.name.com/v4/domains/example.org/records',
+            request_url = 'https://api.name.com/v4/domains/' + self.domain + '/records/'
+            response = requests.get(request_url,
                                     auth=(self.username, self.token))
         except requests.exceptions.RequestException as e:
             logger.info('GetDNSRecord Request Failed' + str(e))
