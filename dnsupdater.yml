@@ -1,0 +1,5 @@
+record:
+  username: name
+  token: token
+  host: host
+  domain: example.org
