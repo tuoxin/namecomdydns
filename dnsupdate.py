@@ -4,6 +4,7 @@ import yaml
 import sched
 import time
 import logging
+import re
 
 CONFIG_PATH = '/config/'
 schedule = sched.scheduler(time.time, time.sleep)
@@ -134,9 +135,11 @@ class NameDnsUpdater:
     @staticmethod
     def getcurrentip():
         # curl http://ipecho.net/plain
+        # curl https://www.taobao.com/help/getip.php 
         # curl http://metadata.tencentyun.com/meta-data/public-ipv4
+        # reponse like ipCallback({ip:"113.88.139.35"})
         try:
-            response = requests.get('http://metadata.tencentyun.com/meta-data/public-ipv4')
+            response = requests.get('https://www.taobao.com/help/getip.php')
         except requests.exceptions.RequestException as e:
             logger.info('GetCurrentIP Request Failed' + str(e))
             return
@@ -144,8 +147,11 @@ class NameDnsUpdater:
         currentip = ''
         if response.status_code == 200:
             ipbytes = response.content
-            currentip = ipbytes.decode()
-            logger.info(currentip)
+            reponseString = ipbytes.decode()
+            rule = r'"(.*?)"' # 正则规则
+            slotList = re.findall(rule, reponseString)
+            currentip = slotList[0]
+            logger.info('GetCurrentIP result=' + currentip)
         else:
             logger.info('GetCurrentIP Failed response.status_code=' + str(response.status_code))
 
