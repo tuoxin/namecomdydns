@@ -134,8 +134,9 @@ class NameDnsUpdater:
     @staticmethod
     def getcurrentip():
         # curl http://ipecho.net/plain
+        # curl http://metadata.tencentyun.com/meta-data/public-ipv4
         try:
-            response = requests.get('http://ipecho.net/plain')
+            response = requests.get('http://metadata.tencentyun.com/meta-data/public-ipv4')
         except requests.exceptions.RequestException as e:
             logger.info('GetCurrentIP Request Failed' + str(e))
             return
