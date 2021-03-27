@@ -191,6 +191,7 @@ class NameDnsUpdater:
 
 
 def main():
+    logger.info('NameDnsUpdater: v0.4')
     dns = NameDnsUpdater()
     dns.run()
     schedule.run()
